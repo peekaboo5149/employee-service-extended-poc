@@ -19,7 +19,7 @@ public class Employee {
     private UniqueId id;
     private Email email;
     private Password password;
-    private boolean isVerified;
+    private Boolean isVerified;
     private EmployeeStatus status;
     private Role role;
     private LocalDateTime lastUpdatedAt;

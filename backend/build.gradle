@@ -5,8 +5,9 @@ plugins {
 }
 
 group = 'com.deloitte'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.1'
 description = 'Employee Service'
+def jjwtVersion = "0.13.0"
 
 java {
 	toolchain {
@@ -29,6 +30,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+    implementation "io.jsonwebtoken:jjwt-api:${jjwtVersion}"
+    runtimeOnly "io.jsonwebtoken:jjwt-impl:${jjwtVersion}"
+    runtimeOnly "io.jsonwebtoken:jjwt-jackson:${jjwtVersion}"
     implementation 'io.vavr:vavr:0.10.7'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'

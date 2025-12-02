@@ -1,5 +1,7 @@
 package com.deloitte.employees.infra.jpa.mapper;
 
+import com.deloitte.employees.common.enums.EmployeeStatus;
+import com.deloitte.employees.common.enums.Role;
 import com.deloitte.employees.common.exceptions.ValidationFailure;
 import com.deloitte.employees.common.mapper.DataMapper;
 import com.deloitte.employees.domain.auth.entities.Employee;
@@ -9,6 +11,8 @@ import com.deloitte.employees.domain.auth.valueobjects.UniqueId;
 import com.deloitte.employees.infra.jpa.entities.auth.EmployeeEntity;
 import io.vavr.control.Either;
 import org.springframework.stereotype.Component;
+
+import java.util.Objects;
 
 @Component
 public class EmployeeDataMapper implements DataMapper<Employee, EmployeeEntity> {
@@ -37,9 +41,9 @@ public class EmployeeDataMapper implements DataMapper<Employee, EmployeeEntity> 
                 .id(obj.getId().getValue())
                 .email(obj.getEmail().getValue())
                 .password(obj.getPassword().getValue())
-                .isVerified(obj.isVerified())
-                .role(obj.getRole())
-                .status(obj.getStatus())
+                .isVerified(Objects.requireNonNullElse(obj.getIsVerified(), false))
+                .role(Objects.requireNonNullElse(obj.getRole(), Role.USER))
+                .status(Objects.requireNonNullElse(obj.getStatus(), EmployeeStatus.ACTIVE))
                 .build();
     }
 }
