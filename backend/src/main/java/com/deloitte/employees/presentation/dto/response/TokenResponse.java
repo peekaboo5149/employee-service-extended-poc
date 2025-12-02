@@ -1,4 +1,4 @@
-package com.deloitte.employees.presentation.dto.request;
+package com.deloitte.employees.presentation.dto.response;
 
 import lombok.Builder;
 import lombok.Data;

@@ -6,9 +6,9 @@ import com.deloitte.employees.domain.auth.repositories.EmployeeRepositoryFacade;
 import com.deloitte.employees.domain.auth.valueobjects.Email;
 import com.deloitte.employees.domain.auth.valueobjects.Password;
 import com.deloitte.employees.domain.auth.valueobjects.UniqueId;
-import com.deloitte.employees.presentation.dto.AuthenticationRequest;
-import com.deloitte.employees.presentation.dto.RegistrationRequest;
-import com.deloitte.employees.presentation.dto.request.TokenResponse;
+import com.deloitte.employees.presentation.dto.request.AuthenticationRequest;
+import com.deloitte.employees.presentation.dto.request.RegistrationRequest;
+import com.deloitte.employees.presentation.dto.response.TokenResponse;
 import com.deloitte.employees.presentation.mapper.AppExceptionMapper;
 import com.deloitte.employees.presentation.services.EmployeeAuthenticationService;
 import com.deloitte.employees.presentation.services.JwtService;
@@ -19,8 +19,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor

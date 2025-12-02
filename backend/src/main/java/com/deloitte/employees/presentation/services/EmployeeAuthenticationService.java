@@ -1,8 +1,8 @@
 package com.deloitte.employees.presentation.services;
 
-import com.deloitte.employees.presentation.dto.AuthenticationRequest;
-import com.deloitte.employees.presentation.dto.RegistrationRequest;
-import com.deloitte.employees.presentation.dto.request.TokenResponse;
+import com.deloitte.employees.presentation.dto.request.AuthenticationRequest;
+import com.deloitte.employees.presentation.dto.request.RegistrationRequest;
+import com.deloitte.employees.presentation.dto.response.TokenResponse;
 
 public interface EmployeeAuthenticationService {
 

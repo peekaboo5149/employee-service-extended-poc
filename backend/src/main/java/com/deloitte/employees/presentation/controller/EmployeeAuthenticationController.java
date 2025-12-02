@@ -1,8 +1,7 @@
 package com.deloitte.employees.presentation.controller;
 
-import com.deloitte.employees.presentation.dto.AuthenticationRequest;
-import com.deloitte.employees.presentation.dto.RegistrationRequest;
-import com.deloitte.employees.presentation.dto.request.TokenResponse;
+import com.deloitte.employees.presentation.dto.request.AuthenticationRequest;
+import com.deloitte.employees.presentation.dto.request.RegistrationRequest;
 import com.deloitte.employees.presentation.services.EmployeeAuthenticationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
