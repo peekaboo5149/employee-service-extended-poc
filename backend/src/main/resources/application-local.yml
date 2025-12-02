@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: employees-backend
+  datasource:
+    url: jdbc:h2:mem:employee-db;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password: ''
+    driverClassName: org.h2.Driver
+    connectionTimeout: 60000
+    maxLifeTime: 90000
+    maximumPoolSize: 20
+    idleTimeout: 90000
+    minimumIdle: 10
+    leakDetectionThreshold: 30000
+    connectionTestQuery: SELECT 1
+    readOnly: false
+    metadata:
+      database-platform: org.hibernate.dialect.H2Dialect
+      hibernate:
+        ddlType: create
+        formatSql: false
+      showSql: true
+
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.orm.jdbc.bind: trace
+    org.hibernate.orm.schema: debug
+    org.hibernate.orm.boot: debug
+    org.hibernate.orm.connections: debug
