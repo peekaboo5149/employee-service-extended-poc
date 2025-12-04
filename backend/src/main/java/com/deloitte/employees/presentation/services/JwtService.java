@@ -1,6 +1,7 @@
 package com.deloitte.employees.presentation.services;
 
 import com.deloitte.employees.domain.auth.entities.Employee;
+import io.jsonwebtoken.Claims;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Map;
@@ -10,4 +11,6 @@ public interface JwtService {
     boolean isTokenValid(String jwt, UserDetails userDetails);
     String generateToken(Employee employee);
     String generateToken(Map<String, Object> extraClaims, Employee employee);
+
+    Claims extractAllClaims(String token);
 }

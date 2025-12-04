@@ -1,6 +1,7 @@
 package com.deloitte.employees.presentation.services.impl;
 
 import com.deloitte.employees.domain.auth.entities.Employee;
+import com.deloitte.employees.helper.WebConstants;
 import com.deloitte.employees.presentation.services.JwtService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -21,10 +22,11 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 class JwtServiceImpl implements JwtService {
 
-    private static final String SECRET_KEY = "3874316F6D64656C6F69747465656D706C6F79656573736563726574736563726574";
+    private final JwtConfigProperties jwtConfigProperties;
 
     /**
      * Extracts the username (subject) from the JWT.
+     *
      * @param jwt The JWT token.
      * @return The username (email) stored in the subject claim.
      */
@@ -35,7 +37,8 @@ class JwtServiceImpl implements JwtService {
 
     /**
      * Checks if a token is valid for a given UserDetails.
-     * @param jwt The JWT token.
+     *
+     * @param jwt         The JWT token.
      * @param userDetails The UserDetails object for comparison.
      * @return True if the token is valid (username matches and is not expired).
      */
@@ -52,7 +55,8 @@ class JwtServiceImpl implements JwtService {
         return claimsResolver.apply(claims);
     }
 
-    private Claims extractAllClaims(String token) {
+    @Override
+    public Claims extractAllClaims(String token) {
         return Jwts
                 .parser()
                 .setSigningKey(getSigningKey())
@@ -70,7 +74,7 @@ class JwtServiceImpl implements JwtService {
     }
 
     private Key getSigningKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+        byte[] keyBytes = Decoders.BASE64.decode(jwtConfigProperties.getSecret());
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
@@ -79,6 +83,7 @@ class JwtServiceImpl implements JwtService {
     /**
      * Generates a JWT token for the provided UserDetails.
      * This method is needed in EmployeeAuthenticationServiceImpl
+     *
      * @param employee The UserDetails to base the token claims on.
      * @return The generated JWT string.
      */
@@ -89,15 +94,20 @@ class JwtServiceImpl implements JwtService {
 
     /**
      * Generates a JWT token with custom claims.
+     *
      * @param extraClaims Additional claims (e.g., roles).
-     * @param userDetails The UserDetails to base the token claims on.
+     * @param employee    The UserDetails to base the token claims on.
      * @return The generated JWT string.
      */
-    public String generateToken(Map<String, Object> extraClaims, Employee userDetails) {
+    public String generateToken(Map<String, Object> extraClaims, Employee employee) {
+        extraClaims.put(WebConstants.ID, employee.getId().getValue());
+        extraClaims.put(WebConstants.STATUS, employee.getStatus().name());
+        extraClaims.put(WebConstants.ROLE, employee.getRole().name());
+        extraClaims.put(WebConstants.IS_VERIFIED, employee.getIsVerified() != null && employee.getIsVerified());
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
-                .setSubject(userDetails.getEmail().getValue())
+                .setSubject(employee.getEmail().getValue())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)

@@ -203,7 +203,7 @@ class EmployeeRepositoryTest {
         Employee updatedEmployee = result.get();
 
         assertEquals(Role.ADMIN, updatedEmployee.getRole());
-        assertTrue(updatedEmployee.isVerified());
+        assertTrue(updatedEmployee.getIsVerified());
 
         // Also verify in DB
         var dbRole = jdbcTemplate.queryForObject(
@@ -239,7 +239,6 @@ class EmployeeRepositoryTest {
     }
 
 
-
     /// ---- HELPER ------
     private void save(Employee employee) {
         Role role = Objects.isNull(employee.getRole()) ? Role.USER : employee.getRole();
@@ -255,7 +254,7 @@ class EmployeeRepositoryTest {
                 employee.getId().getValue(),
                 employee.getEmail().getValue(),
                 employee.getPassword().getValue(),
-                employee.isVerified(),
+                employee.getIsVerified(),
                 role.name(),
                 status,
                 createdAt,

@@ -16,3 +16,6 @@ Content-Type: application/json
   "email": "jd.vance@example.com",
   "password": "SecurePass123!ASDASD"
 }
+
+### TEST CONTENT PROTECTED ROUTE ###
+GET http://localhost:8080/test

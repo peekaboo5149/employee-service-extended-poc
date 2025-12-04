@@ -1,41 +1,46 @@
 package com.deloitte.employees.presentation.config;
 
-import com.deloitte.employees.presentation.config.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager; // 👈 NEW IMPORT
-import org.springframework.security.authentication.AuthenticationProvider; // 👈 NEW IMPORT
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider; // 👈 NEW IMPORT
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration; // 👈 NEW IMPORT
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService; // 👈 NEW IMPORT
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@EnableWebSecurity
+@EnableMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 class WebSecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
-    private final UserDetailsService userDetailsService; // Needs implementation
-    // The PasswordEncoder is needed for the DaoAuthenticationProvider
+    private final UserDetailsService userDetailsService;
+    private final AuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final AccessDeniedHandler jwtAccessDeniedHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .cors(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
-                // Configure STATELESS session management for JWT
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                        .accessDeniedHandler(jwtAccessDeniedHandler)
+                )
                 .authorizeHttpRequests(auth -> auth
-                        // 🔑 Only login and register are permitted by all
                         .requestMatchers(
                                 "/api/v1/auth/login",
                                 "/api/v1/auth/register"
@@ -50,8 +55,6 @@ class WebSecurityConfig {
                 // Configure Logout
                 .logout(logout -> logout
                         .logoutUrl("/api/v1/auth/logout")
-                        // In a stateless JWT system, we typically don't clear security context
-                        // on the server, but handle it client-side. Server-side just confirms receipt.
                         .logoutSuccessHandler((request, response, authentication) -> {
                             response.setStatus(204);
                         })

@@ -6,11 +6,10 @@ import com.deloitte.employees.domain.auth.entities.Employee;
 import com.deloitte.employees.domain.auth.valueobjects.Email;
 import com.deloitte.employees.domain.auth.valueobjects.Password;
 import com.deloitte.employees.domain.auth.valueobjects.UniqueId;
+import com.deloitte.employees.domain.departments.entities.Department;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 
 public class TestUtils {
@@ -71,5 +70,13 @@ public class TestUtils {
                 .replace("-", "")
                 .replace("_", "")
                 .substring(0, 8) + "@gmail.com").get();
+    }
+
+    public static Department buildDepartment() {
+        return Department.builder()
+                .id(UniqueId.generate().getValue())
+                .title("TestDepartment")
+                .description("Test Department Description")
+                .build();
     }
 }

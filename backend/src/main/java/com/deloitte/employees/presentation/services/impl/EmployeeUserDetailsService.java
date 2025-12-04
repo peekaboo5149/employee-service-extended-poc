@@ -25,11 +25,13 @@ class EmployeeUserDetailsService implements UserDetailsService {
         Employee employee = employeeRepositoryFacade.findByEmail(email)
                 .getOrElseThrow(appExceptionMapper::map)
                 .getOrElseThrow(() -> new UsernameNotFoundException("Employee with email " + emailStr + " not found"));
-        return new User(
-                employee.getEmail().getValue(),
-                employee.getPassword().getValue(),
-                new java.util.ArrayList<>()
-        );
+
+        String role = "ROLE_" + employee.getRole().name();
+        return User.builder()
+                .username(employee.getEmail().getValue())
+                .password(employee.getPassword().getValue())
+                .authorities(role)
+                .build();
 
     }
 }

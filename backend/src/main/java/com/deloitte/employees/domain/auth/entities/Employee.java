@@ -24,24 +24,4 @@ public class Employee {
     private Role role;
     private LocalDateTime lastUpdatedAt;
     private LocalDateTime createdAt;
-
-    public void verify() {
-        this.isVerified = true;
-        this.lastUpdatedAt = LocalDateTime.now();
-    }
-
-    public void changeStatus(EmployeeStatus newStatus) {
-        this.status = newStatus;
-        this.lastUpdatedAt = LocalDateTime.now();
-    }
-
-    public void updatePassword(Password newPassword) {
-        this.password = newPassword;
-        this.lastUpdatedAt = LocalDateTime.now();
-    }
-
-    public void changeRole(Role newRole) {
-        this.role = newRole;
-        this.lastUpdatedAt = LocalDateTime.now();
-    }
 }

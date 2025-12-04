@@ -1,4 +1,4 @@
-package com.deloitte.employees.presentation.advice;
+package com.deloitte.employees.presentation.handlers;
 
 import com.deloitte.employees.common.models.ErrorDetail;
 import com.deloitte.employees.presentation.exception.AppException;
@@ -114,7 +114,7 @@ class GlobalExceptionHandler {
 
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<ErrorResponse> handleAuthenticationException(AuthenticationException ex) {
-
+        log.error("Authentication failed: ", ex);
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .message("Authentication failed")
                 .code(ErrorCode.UNAUTHORIZED.getHttpStatus().value())
